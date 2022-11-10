@@ -2,29 +2,8 @@ document.querySelector('#button').onclick = function() {
     
     var gender;
     const personGenerator = {
-        surnameJson: `{  
-            "count": 16,
-            "list": {
-                "id_1": "Иванов",
-                "id_2": "Смирнов",
-                "id_3": "Кузнецов",
-                "id_4": "Васильев",
-                "id_5": "Петров",
-                "id_6": "Михайлов",
-                "id_7": "Новиков",
-                "id_8": "Федоров",
-                "id_9": "Кравцов",
-                "id_10": "Николаев",
-                "id_11": "Семёнов",
-                "id_12": "Славин",
-                "id_13": "Степанов",
-                "id_14": "Павлов",
-                "id_15": "Александров",
-                "id_16": "Морозов"
-            }
-        }`,
 
-        thirdNameJson: `{  
+        surnameJson: `{  
             "count": 16,
             "list": {
                 "id_1": "Негодяев",
@@ -71,9 +50,9 @@ document.querySelector('#button').onclick = function() {
                 "id_2": "Максим",
                 "id_3": "Иван",
                 "id_4": "Артем",
-                "id_5": "Дмитрий",
-                "id_6": "Никита",
-                "id_7": "Михаил",
+                "id_5": "Владимир",
+                "id_6": "Олег",
+                "id_7": "Виктор",
                 "id_8": "Даниил",
                 "id_9": "Егор",
                 "id_10": "Андрей"
@@ -173,11 +152,11 @@ document.querySelector('#button').onclick = function() {
 
             if (gender == this.GENDER_FEMALE){
                
-                return this.randomValue(this.thirdNameJson) + "а";
+                return this.randomValue(this.firstNameMaleJson) + "овна";
             }
             else if (gender == this.GENDER_MALE){
                
-                return this.randomValue(this.thirdNameJson);
+                return this.randomValue(this.firstNameMaleJson) + "ович";
             }
             
 
