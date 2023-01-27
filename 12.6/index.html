@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<?php
+$example_persons_array = [
+    [
+        'fullname' => 'Иванов Иван Иванович',
+        'job' => 'tester',
+    ],
+    [
+        'fullname' => 'Степанова Наталья Степановна',
+        'job' => 'frontend-developer',
+    ],
+    [
+        'fullname' => 'Пащенко Владимир Александрович',
+        'job' => 'analyst',
+    ],
+    [
+        'fullname' => 'Громов Александр Иванович',
+        'job' => 'fullstack-developer',
+    ],
+    [
+        'fullname' => 'Славин Семён Сергеевич',
+        'job' => 'analyst',
+    ],
+    [
+        'fullname' => 'Цой Владимир Антонович',
+        'job' => 'frontend-developer',
+    ],
+    [
+        'fullname' => 'Быстрая Юлия Сергеевна',
+        'job' => 'PR-manager',
+    ],
+    [
+        'fullname' => 'Шматко Антонина Сергеевна',
+        'job' => 'HR-manager',
+    ],
+    [
+        'fullname' => 'аль-Хорезми Мухаммад ибн-Муса',
+        'job' => 'analyst',
+    ],
+    [
+        'fullname' => 'Бардо Жаклин Фёдоровна',
+        'job' => 'android-developer',
+    ],
+    [
+        'fullname' => 'Шварцнегер Арнольд Густавович',
+        'job' => 'babysitter',
+    ],
+];
+
+$now = $example_persons_array[0]["fullname"];
+function getPartsFromFullname($full){
+
+    $arr = explode(" ", $full); 
+    return ['surname' => $arr[0] ,'name' => $arr[1], 'patronomyc' => $arr[2]];  
+    
+}
+
+function getFullnameFromParts($first, $second, $third){
+    return $first." ".$second." ".$third;
+}
+
+function getShortName($name){
+    $listName = getPartsFromFullname($name);
+    return $listName["name"]." ".mb_substr($listName["surname"], 0, 1).".";
+}
+
+function getGenderFromName($name){
+    $count = 0;
+    $full = getPartsFromFullname($name);
+
+    if(mb_substr($full["subname"], -2).mb_substr($full["patronomyc"], -1)=="а"){--$count;}
+    if(mb_substr($full["patronomyc"], -3).mb_substr($full["patronomyc"], -2).mb_substr($full["patronomyc"], -1)=="вна"){--$count;}
+    if(mb_substr($full["name"], -1)=="а"){--$count;}
+    if(mb_substr($full["name"], -1)=="й" || mb_substr($full["name"], -1)=="н"){++$count;}
+    if(mb_substr($full["surname"], -1)=="в"){++$count;}
+    if(mb_substr($full["patronomyc"], -1).mb_substr($full["name"], -1)=="ич"){++$count;}
+    if ($count > 0) {return 1;}
+    if ($count < 0) {return -1;}
+    if ($count = 0) {return 0;}    
+}
+
+function getGenderDescription($crowd){
+    $male = 0;
+    $female = 0;
+    $XZ = 0;
+    
+    for($i = 0; $i <= count($crowd)-1; $i++){
+        
+        switch(getGenderFromName($crowd[$i]["fullname"])){
+            case 1:
+                $male++;
+                break;
+            case -1:
+                $female++;
+                break;
+            case 0:
+                $XZ++;
+                break;
+        }   
+    }
+    $sum = $male + $female + $XZ;
+
+
+    $result = "Гендерный состав аудитории:\n---------------------------\nМужчины - " . round($male / $sum*100, 1) . "%\nЖенщины - " . round($female / $sum*100, 1) . "%\nНе удалось определить - " . round($XZ / $sum*100, 1) . "%";
+    return $result;
+}
+
+function getPerfectPartner($sur,$name,$pat,$crowd){
+    $full = getFullnameFromParts($sur, $name, $pat);
+    $gender = getGenderFromName($full)*-1;
+    $randMan = $crowd[rand(0,count($crowd)-1)]["fullname"];
+    while($gender!=getGenderFromName($randMan)){$randMan = $crowd[rand(0,count($crowd)-1)]["fullname"];}
+    $together = rand(5000, 10000) / 100;
+    return getShortName($full)." + ".getShortName($randMan)." = ♡ Идеально на ".$together."% ♡";
+
+}
+echo getGenderDescription($example_persons_array);
+?>
+
+
+</body>
+</html>
+
+
+
